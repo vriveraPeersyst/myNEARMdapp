@@ -6,12 +6,11 @@
 │   ├── .github
 │   │   └── workflows
 │   │       └── build-web.yaml
-│   ├── README.md
+│   ├── .gitignore
 │   ├── apps
 │   │   ├── api
 │   │   └── web
 │   │       ├── .gitignore
-│   │       ├── README.md
 │   │       ├── eslint.config.js
 │   │       ├── index.html
 │   │       ├── package.json
@@ -20,14 +19,33 @@
 │   │       ├── src
 │   │       │   ├── App.css
 │   │       │   ├── App.tsx
+│   │       │   ├── Routes.tsx
 │   │       │   ├── assets
 │   │       │   │   └── react.svg
+│   │       │   ├── components
+│   │       │   │   ├── SignInOutButtons.tsx
+│   │       │   │   ├── SplashScreen.tsx
+│   │       │   │   └── WalletButtons.tsx
+│   │       │   ├── contexts
+│   │       │   │   └── WalletSelectorContext.tsx
 │   │       │   ├── core
 │   │       │   │   └── wallet
-│   │       │   │       └── near.factory.ts
+│   │       │   │       ├── near.factory.ts
+│   │       │   │       ├── wallet-actions.ts
+│   │       │   │       └── wallet-selector.ts
 │   │       │   ├── index.css
 │   │       │   ├── main.tsx
 │   │       │   ├── modules
+│   │       │   │   ├── chart
+│   │       │   │   │   └── ChartScreen.tsx
+│   │       │   │   ├── history
+│   │       │   │   │   └── HistoryScreen.tsx
+│   │       │   │   ├── markets
+│   │       │   │   │   └── MarketsScreen.tsx
+│   │       │   │   ├── settings
+│   │       │   │   │   └── SettingsScreen.tsx
+│   │       │   │   ├── trade
+│   │       │   │   │   └── TradeScreen.tsx
 │   │       │   │   └── trading
 │   │       │   │       ├── components
 │   │       │   │       │   └── TradePanel.tsx
@@ -54,4 +72,4 @@
 ├── package.json
 └── repo_tree.txt
 
-24 directories, 31 files
+31 directories, 42 files

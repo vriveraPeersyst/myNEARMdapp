@@ -1,15 +1,14 @@
-// File: src/App.tsx
-import React from 'react'
-import './App.css'
-import TradePanel from './modules/trading/components/TradePanel'
+import React from "react";
+import { useWalletSelector } from "./contexts/WalletSelectorContext";
+import SplashScreen from "./components/SplashScreen";
+import Routes from "./Routes"; // Your main tab-based routing
 
-function App() {
-  return (
-    <main>
-      <h1>NEAR Intent Trading DApp</h1>
-      <TradePanel />
-    </main>
-  )
+export default function App() {
+  const { accountId } = useWalletSelector();
+
+  if (!accountId) {
+    return <SplashScreen />;
+  }
+
+  return <Routes />;
 }
-
-export default App

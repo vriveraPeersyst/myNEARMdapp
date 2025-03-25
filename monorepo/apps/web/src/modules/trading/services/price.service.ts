@@ -2,22 +2,19 @@
 // Replace with a real Coingecko or on-chain oracle for actual usage
 
 // Mocked asset price map. In a real app, fetch from a live source
-const MOCK_PRICES: Record<string, number> = {
-    NEAR: 2.00,
-    USDC: 1.00,
-    XRP: 0.45,
-  }
   
   export async function getPrice(assetSymbol: string): Promise<number> {
-    // In a real scenario, you might call an API here:
-    // const resp = await fetch(`https://api.coingecko.com/...?symbol=${assetSymbol}`)
-    // return resp.data.price;
+    const symbolMap: Record<string, string> = {
+      NEAR: 'near',
+      USDC: 'usd-coin',
+      XRP: 'ripple',
+    }
   
-    // Simulate async with small delay
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(MOCK_PRICES[assetSymbol] ?? 0)
-      }, 300)
-    })
+    const coingeckoSymbol = symbolMap[assetSymbol] || 'near'
+    const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coingeckoSymbol}&vs_currencies=usd`
+  
+    const resp = await fetch(url).then((res) => res.json())
+    return resp[coingeckoSymbol]?.usd ?? 0
   }
+  
   

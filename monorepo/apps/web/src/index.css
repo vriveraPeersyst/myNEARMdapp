@@ -1,4 +1,11 @@
+@import "@near-wallet-selector/modal-ui/styles.css";
+
 :root {
+  width: 100%;
+  max-width: 500px;
+
+  /* Center horizontally */
+  margin: 0 auto;
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -11,6 +18,40 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+    /* Example NEAR brand-ish or your custom colors */
+
+  /* Dim the backdrop overlay */
+  --wallet-selector-backdrop-bg: rgba(0, 0, 0, 0.8);
+
+  /* Heading and text colors */
+  --wallet-selector-heading-color: #0072ce; /* NEAR-ish blue */
+  --wallet-selector-text-color: #24272a;    /* Dark text */
+
+  /* Content backgrounds, sidebars, and selected wallet items */
+  --wallet-selector-sidebar-border-color: #e5e5e5;
+  --wallet-selector-selected-wallet-bg: #f8f8f8;
+  --wallet-selector-selected-wallet-bg-hover: #f2f2f2;
+  --wallet-selector-wallet-option-border-color: #ddd;
+  --wallet-selector-wallet-option-bg-hover: #f2f2f2;
+  --wallet-selector-content-bg: #ffffff;
+  --wallet-selector-change-path-bg: #fafafa;
+  --wallet-selector-home-button-bg: #0072ce;
+
+  /* Buttons */
+  --wallet-selector-confirm-button-bg: #0072ce;
+  --confirm-button-bg-hover: #005bb5;
+
+  /* Errors, spinners, close icon color */
+  --wallet-selector-error: #ff585d;
+  --wallet-selector-spinner-color: #0072ce;
+  --wallet-selector-close-button-bg-color: #ffffff;
+  --wallet-selector-close-button-fill-icon-color: #0072ce;
+
+  /* Bottom bar, mobile text color, connected highlight */
+  --wallet-selector-bottom-section: #f8f8f8;
+  --wallet-selector-mobile-text: #333;
+  --wallet-selector-connected-green: #00c08b;
 }
 
 a {
@@ -24,11 +65,12 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  /* Remove display: flex; place-items: center; */
+  /* Keep min-width and min-height if you want them */
   min-width: 320px;
   min-height: 100vh;
 }
+
 
 h1 {
   font-size: 3.2em;
