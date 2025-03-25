@@ -1,0 +1,57 @@
+.
+├── CreateProjectPrompt.txt
+├── generate_report.sh
+├── get_only_tree.sh
+├── monorepo
+│   ├── .github
+│   │   └── workflows
+│   │       └── build-web.yaml
+│   ├── README.md
+│   ├── apps
+│   │   ├── api
+│   │   └── web
+│   │       ├── .gitignore
+│   │       ├── README.md
+│   │       ├── eslint.config.js
+│   │       ├── index.html
+│   │       ├── package.json
+│   │       ├── public
+│   │       │   └── vite.svg
+│   │       ├── src
+│   │       │   ├── App.css
+│   │       │   ├── App.tsx
+│   │       │   ├── assets
+│   │       │   │   └── react.svg
+│   │       │   ├── core
+│   │       │   │   └── wallet
+│   │       │   │       └── near.factory.ts
+│   │       │   ├── index.css
+│   │       │   ├── main.tsx
+│   │       │   ├── modules
+│   │       │   │   └── trading
+│   │       │   │       ├── components
+│   │       │   │       │   └── TradePanel.tsx
+│   │       │   │       ├── hooks
+│   │       │   │       │   └── useTrade.ts
+│   │       │   │       ├── services
+│   │       │   │       │   └── price.service.ts
+│   │       │   │       ├── state
+│   │       │   │       │   └── trading.state.ts
+│   │       │   │       └── types
+│   │       │   │           └── trade.types.ts
+│   │       │   └── vite-env.d.ts
+│   │       ├── tsconfig.app.json
+│   │       ├── tsconfig.json
+│   │       ├── tsconfig.node.json
+│   │       └── vite.config.ts
+│   ├── docker
+│   ├── packages
+│   │   ├── backend
+│   │   ├── frontend
+│   │   └── shared
+│   ├── pnpm-workspace.yaml
+│   └── turbo.json
+├── package.json
+└── repo_tree.txt
+
+24 directories, 31 files

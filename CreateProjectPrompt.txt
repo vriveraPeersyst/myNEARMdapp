@@ -1,0 +1,347 @@
+
+
+I want to build a simple NEAR dApp that works with wallet-selector NEARMobile_app .
+
+This dapp is a ultra simplistic trading tool to trade between NEAR Intent assets.
+
+The idea is very simple and the UI should represent it in the same way:
+
+The web is a trading tool where users can trade NEAR Intent assets and have a trading history of their swap prices and PNL on each trade.
+
+The idea is PNL starts at 0 ofc and the user can choose any asset to swap for. So user has asset A and swaps for Asset B.
+Once the user swaps asset A for B he can view in realtime the amount of $s made since he swapped. For example if the user swapped USDC for NEAR and NEAR went up PNL is possitive, the user should see the PNL in realtime. Now lets imagine the user swaps again NEAR but now for XRP. Now the PNL from the previous trade closes and gets saved on the list of trades as:
+Bought NEAR for X USDC and swapped it for Y USDC: 15$ PNL
+Now he is in the next trade: Bought XRP for X NEAR. Current PNL = -3 $s 
+
+On each active trade the user can choose to sell % or BUY. 
+
+If the user bought 10 XRP for 5 NEAR and then sells 5 XRP for 3 NEAR the PNL is 1 NEAR in $s at that time.
+
+Now based on Peersyst coding style, code architecture and guidelines lets start this project:
+
+
+Perfect! With your goal of building a minimal NEAR Intent trading tool and given our Peersyst-aligned architecture, we’ll structure this project in a modular and domain-driven way. Here's a proposed breakdown to get started:
+
+---
+
+## 🏗️ Project Setup
+
+**Monorepo Structure:**
+```
+monorepo/
+├── apps/
+│   ├── api/ (Optional for historical data or user tracking)
+│   ├── web/ (Vite + React frontend)
+│   └── mobile/ (for NEARMobile_app integration later)
+├── packages/
+│   ├── frontend/ (hooks, services, domain models)
+│   ├── shared/ (types, utilities, NEAR wallet-selector logic)
+│   └── backend/ (if API is needed)
+```
+
+---
+
+## 📱 Frontend Structure (`apps/web`)
+
+### `src/modules/trading/`
+- `components/`
+  - `TradePanel.tsx` – select assets, input amount, swap
+  - `PNLDisplay.tsx` – shows live PNL for current trade
+  - `TradeHistory.tsx` – list of past trades with PNL summary
+- `hooks/`
+  - `useTrade.ts` – manages current trade state
+  - `usePNL.ts` – computes PNL based on real-time prices
+- `services/`
+  - `price.service.ts` – fetches token prices (via Coingecko or on-chain)
+  - `swap.service.ts` – simulates/executes asset swaps (using NEAR SDK)
+- `state/`
+  - `trading.state.ts` – zustand store for trade data
+- `types/`
+  - `trade.types.ts` – trade, asset, pnl interfaces
+
+### `src/core/wallet/`
+- `near.factory.ts` – handles NEAR wallet-selector logic
+- `wallet.state.ts` – manages connected wallet, balances, etc.
+
+---
+
+## ⚙️ Shared Logic (`packages/frontend` or `shared`)
+- `utils/number-format.ts` – formats $PNL values
+- `hooks/use-interval.ts` – hook for real-time price polling
+- `constants/tokens.ts` – supported NEAR Intent assets
+
+---
+
+## 🔐 Wallet Selector Integration
+
+- Integrate [`near/wallet-selector`](https://github.com/near/wallet-selector) in `near.factory.ts`.
+- Use `@near-wallet-selector/core` with `near-mobile` module to support NEARMobile.
+- Example wallet integration logic lives in `wallet.service.ts`.
+
+---
+
+## 🧠 Domain Logic
+
+### Trade Lifecycle
+- A "trade" opens when user swaps Asset A → B.
+- PNL is computed based on the *current* price of Asset B vs. the price when swapped.
+- A trade closes when another swap occurs or when selling all of the asset.
+
+### Trade History
+- Each closed trade gets stored in a `trades[]` array.
+- Show entry price, exit price, and calculated PNL in both token and USD.
+
+---
+
+## 🧪 Testing Plan
+
+- Unit test hooks (`useTrade`, `usePNL`) with mock price data.
+- Mock services (`price.service.mock.ts`, `swap.service.mock.ts`).
+- Test trading logic with state transitions (open, update PNL, close).
+
+---
+
+Would you like me to scaffold the initial `TradePanel`, `useTrade`, and state management so we can kick off with code?
+
+.
+├── CreateProjectPrompt.txt
+├── get_only_tree.sh
+├── monorepo
+│   ├── .github
+│   │   └── workflows
+│   │       └── build-web.yaml
+│   ├── README.md
+│   ├── apps
+│   │   ├── api
+│   │   └── web
+│   │       ├── .gitignore
+│   │       ├── README.md
+│   │       ├── eslint.config.js
+│   │       ├── index.html
+│   │       ├── package.json
+│   │       ├── public
+│   │       │   └── vite.svg
+│   │       ├── src
+│   │       │   ├── App.css
+│   │       │   ├── App.tsx
+│   │       │   ├── assets
+│   │       │   │   └── react.svg
+│   │       │   ├── core
+│   │       │   │   └── wallet
+│   │       │   │       └── near.factory.ts
+│   │       │   ├── index.css
+│   │       │   ├── main.tsx
+│   │       │   ├── modules
+│   │       │   │   └── trading
+│   │       │   │       ├── components
+│   │       │   │       │   └── TradePanel.tsx
+│   │       │   │       ├── hooks
+│   │       │   │       │   └── useTrade.ts
+│   │       │   │       ├── services
+│   │       │   │       │   └── price.service.ts
+│   │       │   │       ├── state
+│   │       │   │       │   └── trading.state.ts
+│   │       │   │       └── types
+│   │       │   │           └── trade.types.ts
+│   │       │   └── vite-env.d.ts
+│   │       ├── tsconfig.app.json
+│   │       ├── tsconfig.json
+│   │       ├── tsconfig.node.json
+│   │       └── vite.config.ts
+│   ├── docker
+│   ├── packages
+│   │   ├── backend
+│   │   ├── frontend
+│   │   └── shared
+│   ├── pnpm-lock.yaml
+│   ├── pnpm-workspace.yaml
+│   └── turbo.json
+└── repo_tree.txt
+
+24 directories, 30 files
+
+
+
+
+
+------------
+
+Below are some suggestions to help you create a **MetaTrader-style mobile UI** with NEAR Protocol branding. These recommendations lean toward a React-based (web) or React Native (mobile) approach, but the principles can be adapted to your preferred stack.
+
+---
+
+## 1. My App Plan Layout
+
+### A. **MetaTrader-Like Navigation**
+- **Bottom Tab Navigation** (common in mobile trading apps): 
+  - **Quotes/Markets** – where users see a list of tradable pairs/assets from NEAR Intents.
+  - **Chart** – main chart view (candlesticks) (Trading view Lightweight Charts )
+  - **Trade** – active orders, positions, new order form (Swap and OTC Intents features. Swap as market and OTC as limit order )
+  - **History** – closed trades, PNL, deposit/withdrawal from Intents history
+  - **Settings** – wallet connection, user preferences (Fiat display value, up/down colors: red/green , black/grey, blue/grey)
+
+### B. **Header/Branding**
+- Splash screen with dapp logo: A copy of MetaTrader 5 logo but with NEAR branding and called NearTrader5
+- Keep the rest of the layout relatively neutral in color so NEAR branding stands out (e.g., white backgrounds with NEAR’s accent color for the icons at the bottom menu.)
+
+### C. **Charting View**
+- MetaTrader’s primary view is a candlestick chart, with overlay indicators. 
+- For a minimal MVP use:
+  - **[Lightweight Charts](https://www.tradingview.com/lightweight-charts/)** (TradingView’s open-source library)
+- Include an *Order panel* near the bottom (or a floating action button) to place trades quickly.
+
+---
+
+## 2. Use a Mobile-First Design System
+
+MetaTrader’s mobile UI uses:
+- **Minimal top-level navigation** – mostly bottom tabs or side drawer
+- **Compact lists** for markets, orders, trades
+- **Bright highlights** for PNL (green for profit, red for loss)
+
+### A. **Color Palette**
+- NEAR’s primary color is often rendered as white-on-black or black-on-white with accent green.  
+- For a *MetaTrader vibe*:
+  - Keep backgrounds simple (gray, dark gray, or white).
+  - Use green for positive changes and red for negative changes (or brand accent color for positivity).
+
+### B. **Typography & Icons**
+- Use a sleek, modern typeface for your headings and text (e.g., Inter, Roboto, etc.).
+- For icons, adopt a consistent set that represents:
+  - Market quotes (e.g., “graph” icon)
+  - Orders (e.g., “shopping cart” or “swap” icon)
+  - PNL (up or down arrows, “profit” icon)
+  - NEAR’s official logo for the main brand reference
+
+### C. **Responsive or Native?**
+1. **Responsive Web**: If using `apps/web` + React + Vite, ensure you use responsive breakpoints and possibly a library like **Chakra UI** or **Material UI** with custom theming for that “mobile-first” experience.  
+
+---
+
+## 3. Core Screens to Emulate MetaTrader’s Flow
+
+1. **Splash/Authentication**  
+   - If your DApp requires a login or wallet connection first, show a minimal screen with the NEAR logo.  
+   - Provide a “Connect Wallet” button that triggers the NEARMobile or wallet-selector sign in flow.
+
+2. **Quotes/Markets Screen**  
+   - List of markets or assets: NEAR/USDC, NEAR/XRP, etc.  
+   - Show current price, 24h % change, maybe a small sparkline chart on the right side.
+
+3. **Chart Screen**  
+   - The main candlestick or line chart.  
+   - Timeframe options (1m, 5m, 1h, 1d, etc.) in a horizontal scroll or segmented control.  
+   - “New Order” button (floating or in a top-right menu) that slides up the trade panel.
+
+4. **Trade Panel**  
+   - Very important to keep it simple: “Buy” or “Sell” with an amount input.  
+   - “Market Execution” Intents Swap or “Limit Order” Intents OTC.  
+   - Display user’s current wallet balance, open positions, etc.
+
+5. **Positions Screen**  
+   - List active trades with real-time PNL.  
+   - Option to partially close or fully close a position.  
+
+6. **History Screen**  
+   - Past trades, deposit/withdraw records, total PNL.
+
+---
+
+## 4. NEAR Integration & Wallet Connection
+
+1. **NEARMobile** (or other wallet modules)  
+   - Install `@near-wallet-selector/core`, `near-mobile`, and `@near-wallet-selector/modal-ui`.  
+   - In your code, initialize the wallet selector in a factory (e.g., `src/core/wallet/near.factory.ts`).  
+   - Create a store or context to track the user’s connected account, balances, etc.
+
+2. **Trading Flow**  
+   - Typically, MetaTrader is trading on a centralized server.  
+   - For our NEAR DApp the whole swap functionality is inherited from NEAR Intents.
+
+3. **Fetching Balances**  
+   - After user is connected, fetch their token balances (NEAR, USDC, etc.) from NEAR Intents.
+   - Display real-time balance changes if they make trades on-chain.
+
+---
+
+## 5. Visual/UX Examples
+
+**MetaTrader Mobile Key Features to Replicate:**
+- **Charts**: Focus on a single major chart with optional technical indicators.  
+- **Order/Position List**: Show each open position in a card with current PNL.  
+- **Action Buttons**: Typically in the bottom navigation or a floating action button for “New Order”.
+
+**Styling Tips**  
+- Keep the color scheme consistent: use a dark theme with bright neon lines for charts if you want that typical “trader” look.  
+- Show top or bottom bar with essential icons: Home, Charts, Trades, Wallet, Settings.
+
+---
+
+## 6. Example React (Web) Setup for a “Mobile-Style” Layout expose network ip and port to test on mobile 
+
+```tsx
+// pseudo code for a bottom tab layout
+// you can do this with react-router + a "TabBar" component
+function MobileLayout() {
+  return (
+    <div style={styles.container}>
+      <div style={styles.content}>
+        <Routes>
+          <Route path="/" element={<MarketsScreen />} />
+          <Route path="/chart" element={<ChartScreen />} />
+          <Route path="/trade" element={<TradeScreen />} />
+          <Route path="/history" element={<HistoryScreen />} />
+          <Route path="/settings" element={<SettingsScreen />} />
+        </Routes>
+      </div>
+      <TabBar />
+    </div>
+  )
+}
+```
+
+```ts
+// example styles for a bottom bar
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'column' as const,
+    height: '100vh',
+  },
+  content: {
+    flex: 1,
+    overflowY: 'auto' as const,
+  },
+}
+
+// Then define your <TabBar> with icons for each route
+```
+
+When the user opens the site from a mobile device, it’ll look and behave similarly to a mobile app with bottom tabs.
+
+---
+
+## 7. Implementation Notes
+
+- **Testing**: Use responsive design tools in your browser (Chrome DevTools) to simulate mobile screen sizes.  
+- **Charts**: TradingView.  
+- **State Management**: Continue using Zustand for trade/pnl data and queries to your NEAR contract for on-chain details.  
+- **Branding**: Place the NEAR logo tastefully at the top or in a splash screen, adopt NEAR’s color scheme for accent elements, and use neutral or dark backgrounds for the “trading” sections.
+
+---
+
+## 8. Summary & Next Steps
+
+1. **Implement a mobile-style navigation** (bottom tabs).  
+2. **Adopt a chart library** (e.g., TradingView’s lightweight-charts) for the primary chart.  
+3. **Use a React design system** (Chakra, MUI) to quickly build mobile-friendly screens, or go fully **React Native** for an actual mobile app.  
+4. **Sync with NEAR** (wallet-selector + near-mobile) for account login, balance fetching, and real on-chain swaps.  
+5. **Mimic MetaTrader UX**:  
+   - **Tabs**: Quotes, Chart, Trade, History, Settings  
+   - **Order forms**: Simple, with buy/sell toggles  
+   - **Positions**: Real-time PNL in a list  
+   - **History**: A simple transaction log
+
+With these steps, you can produce a mobile interface that strongly resembles MetaTrader’s user experience but with NEAR branding and on-chain logic. 
+
+Good luck with your build, and feel free to ask if you need more specific code snippets or direction on any of these steps!

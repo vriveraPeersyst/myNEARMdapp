@@ -1,0 +1,1202 @@
+===== ./repo_tree.txt =====
+.
+├── CreateProjectPrompt.txt
+├── generate_report.sh
+├── get_only_tree.sh
+├── monorepo
+│   ├── .github
+│   │   └── workflows
+│   │       └── build-web.yaml
+│   ├── README.md
+│   ├── apps
+│   │   ├── api
+│   │   └── web
+│   │       ├── .gitignore
+│   │       ├── README.md
+│   │       ├── eslint.config.js
+│   │       ├── index.html
+│   │       ├── package.json
+│   │       ├── public
+│   │       │   └── vite.svg
+│   │       ├── src
+│   │       │   ├── App.css
+│   │       │   ├── App.tsx
+│   │       │   ├── assets
+│   │       │   │   └── react.svg
+│   │       │   ├── core
+│   │       │   │   └── wallet
+│   │       │   │       └── near.factory.ts
+│   │       │   ├── index.css
+│   │       │   ├── main.tsx
+│   │       │   ├── modules
+│   │       │   │   └── trading
+│   │       │   │       ├── components
+│   │       │   │       │   └── TradePanel.tsx
+│   │       │   │       ├── hooks
+│   │       │   │       │   └── useTrade.ts
+│   │       │   │       ├── services
+│   │       │   │       │   └── price.service.ts
+│   │       │   │       ├── state
+│   │       │   │       │   └── trading.state.ts
+│   │       │   │       └── types
+│   │       │   │           └── trade.types.ts
+│   │       │   └── vite-env.d.ts
+│   │       ├── tsconfig.app.json
+│   │       ├── tsconfig.json
+│   │       ├── tsconfig.node.json
+│   │       └── vite.config.ts
+│   ├── docker
+│   ├── packages
+│   │   ├── backend
+│   │   ├── frontend
+│   │   └── shared
+│   ├── pnpm-workspace.yaml
+│   └── turbo.json
+├── package.json
+└── repo_tree.txt
+
+24 directories, 31 files
+
+
+===== ./monorepo/turbo.json =====
+{
+    "pipeline": {
+      "build": {
+        "dependsOn": ["^build"],
+        "outputs": [".next/**", "dist/**"]
+      },
+      "dev": {
+        "cache": false
+      },
+      "lint": {},
+      "test": {}
+    }
+  }
+  
+
+===== ./monorepo/README.md =====
+
+
+===== ./monorepo/.github/workflows/build-web.yaml =====
+
+
+===== ./monorepo/apps/web/tsconfig.node.json =====
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["vite.config.ts"]
+}
+
+
+===== ./monorepo/apps/web/index.html =====
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React + TS</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
+
+===== ./monorepo/apps/web/tsconfig.app.json =====
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["src"]
+}
+
+
+===== ./monorepo/apps/web/README.md =====
+# React + TypeScript + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default tseslint.config({
+  extends: [
+    // Remove ...tseslint.configs.recommended and replace with this
+    ...tseslint.configs.recommendedTypeChecked,
+    // Alternatively, use this for stricter rules
+    ...tseslint.configs.strictTypeChecked,
+    // Optionally, add this for stylistic rules
+    ...tseslint.configs.stylisticTypeChecked,
+  ],
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
+
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default tseslint.config({
+  plugins: {
+    // Add the react-x and react-dom plugins
+    'react-x': reactX,
+    'react-dom': reactDom,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended typescript rules
+    ...reactX.configs['recommended-typescript'].rules,
+    ...reactDom.configs.recommended.rules,
+  },
+})
+```
+
+
+===== ./monorepo/apps/web/public/vite.svg =====
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="31.88" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 257"><defs><linearGradient id="IconifyId1813088fe1fbc01fb466" x1="-.828%" x2="57.636%" y1="7.652%" y2="78.411%"><stop offset="0%" stop-color="#41D1FF"></stop><stop offset="100%" stop-color="#BD34FE"></stop></linearGradient><linearGradient id="IconifyId1813088fe1fbc01fb467" x1="43.376%" x2="50.316%" y1="2.242%" y2="89.03%"><stop offset="0%" stop-color="#FFEA83"></stop><stop offset="8.333%" stop-color="#FFDD35"></stop><stop offset="100%" stop-color="#FFA800"></stop></linearGradient></defs><path fill="url(#IconifyId1813088fe1fbc01fb466)" d="M255.153 37.938L134.897 252.976c-2.483 4.44-8.862 4.466-11.382.048L.875 37.958c-2.746-4.814 1.371-10.646 6.827-9.67l120.385 21.517a6.537 6.537 0 0 0 2.322-.004l117.867-21.483c5.438-.991 9.574 4.796 6.877 9.62Z"></path><path fill="url(#IconifyId1813088fe1fbc01fb467)" d="M185.432.063L96.44 17.501a3.268 3.268 0 0 0-2.634 3.014l-5.474 92.456a3.268 3.268 0 0 0 3.997 3.378l24.777-5.718c2.318-.535 4.413 1.507 3.936 3.838l-7.361 36.047c-.495 2.426 1.782 4.5 4.151 3.78l15.304-4.649c2.372-.72 4.652 1.36 4.15 3.788l-11.698 56.621c-.732 3.542 3.979 5.473 5.943 2.437l1.313-2.028l72.516-144.72c1.215-2.423-.88-5.186-3.54-4.672l-25.505 4.922c-2.396.462-4.435-1.77-3.759-4.114l16.646-57.705c.677-2.35-1.37-4.583-3.769-4.113Z"></path></svg>
+
+===== ./monorepo/apps/web/.gitignore =====
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+
+===== ./monorepo/apps/web/package.json =====
+{
+  "name": "web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@near-wallet-selector/near-mobile-wallet": "^8.10.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "uuid": "^11.1.0",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^15.15.0",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.24.1",
+    "vite": "^6.2.0"
+  }
+}
+
+
+===== ./monorepo/apps/web/tsconfig.json =====
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}
+
+
+===== ./monorepo/apps/web/eslint.config.js =====
+import js from '@eslint/js'
+import globals from 'globals'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import tseslint from 'typescript-eslint'
+
+export default tseslint.config(
+  { ignores: ['dist'] },
+  {
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+    },
+    plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+    },
+    rules: {
+      ...reactHooks.configs.recommended.rules,
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
+    },
+  },
+)
+
+
+===== ./monorepo/apps/web/vite.config.ts =====
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react()],
+})
+
+
+===== ./monorepo/apps/web/src/App.tsx =====
+// File: src/App.tsx
+import React from 'react'
+import './App.css'
+import TradePanel from './modules/trading/components/TradePanel'
+
+function App() {
+  return (
+    <main>
+      <h1>NEAR Intent Trading DApp</h1>
+      <TradePanel />
+    </main>
+  )
+}
+
+export default App
+
+
+===== ./monorepo/apps/web/src/main.tsx =====
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.tsx'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+
+
+===== ./monorepo/apps/web/src/core/wallet/near.factory.ts =====
+
+
+===== ./monorepo/apps/web/src/App.css =====
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+
+===== ./monorepo/apps/web/src/index.css =====
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+
+===== ./monorepo/apps/web/src/vite-env.d.ts =====
+/// <reference types="vite/client" />
+
+
+===== ./monorepo/apps/web/src/modules/trading/types/trade.types.ts =====
+// Example domain models for trades
+
+// Basic representation of an asset we can trade
+export interface Asset {
+    symbol: string;     // e.g., "NEAR", "USDC", "XRP"
+    name: string;       // e.g., "NEAR Protocol", "USD Coin", "XRP"
+    iconUrl?: string;   // optional icon URL
+  }
+  
+  // Data structure for an individual trade
+  export interface Trade {
+    id: string;         // unique ID for the trade
+    assetFrom: Asset;   // the asset we are selling
+    assetTo: Asset;     // the asset we are buying
+    amountFrom: number; // how many units of assetFrom
+    amountTo: number;   // how many units of assetTo we receive
+    entryPrice: number; // price of assetTo at time of purchase (in USD)
+    exitPrice?: number; // price of assetTo at time of closing, if closed
+    openedAt: number;   // timestamp
+    closedAt?: number;  // timestamp
+    pnl?: number;       // final computed PNL for that trade, in USD
+  }
+  
+  // If you also want to keep track of a "position" or "active trade"
+  export interface Position {
+    trade: Trade;
+    // If you want to track partial sells, you could track fraction left, etc.
+  }
+  
+
+===== ./monorepo/apps/web/src/modules/trading/state/trading.state.ts =====
+import { create } from 'zustand'
+import { devtools } from 'zustand/middleware'
+import { Trade, Asset } from '../types/trade.types'
+import { v4 as uuid } from 'uuid'
+
+interface TradingState {
+  trades: Trade[]        // all completed trades
+  currentTrade?: Trade   // the user's active trade (if any)
+
+  // Actions
+  openTrade: (assetFrom: Asset, assetTo: Asset, amountFrom: number, amountTo: number, entryPrice: number) => void
+  closeTrade: (exitPrice: number) => void
+  resetTrades: () => void
+}
+
+export const useTradingStore = create<TradingState>()(
+  devtools((set) => ({
+    trades: [],
+    currentTrade: undefined,
+
+    openTrade: (assetFrom, assetTo, amountFrom, amountTo, entryPrice) => {
+      const newTrade: Trade = {
+        id: uuid(),
+        assetFrom,
+        assetTo,
+        amountFrom,
+        amountTo,
+        entryPrice,
+        openedAt: Date.now(),
+      }
+      set({ currentTrade: newTrade })
+    },
+
+    closeTrade: (exitPrice) => {
+      set((state) => {
+        if (!state.currentTrade) return {}
+
+        const closedTrade: Trade = {
+          ...state.currentTrade,
+          exitPrice,
+          closedAt: Date.now(),
+          // Rough PNL calculation: (exitPrice - entryPrice) * amountTo
+          pnl: (exitPrice - state.currentTrade.entryPrice) * state.currentTrade.amountTo,
+        }
+
+        return {
+          trades: [...state.trades, closedTrade],
+          currentTrade: undefined,
+        }
+      })
+    },
+
+    resetTrades: () => set({ trades: [], currentTrade: undefined }),
+  }))
+)
+
+
+===== ./monorepo/apps/web/src/modules/trading/components/TradePanel.tsx =====
+import React, { useState } from 'react'
+import { useTrade } from '../hooks/useTrade'
+import { Asset } from '../types/trade.types'
+
+const NEAR: Asset = { symbol: 'NEAR', name: 'NEAR Protocol' }
+const USDC: Asset = { symbol: 'USDC', name: 'USD Coin' }
+const XRP: Asset = { symbol: 'XRP', name: 'XRP' }
+
+const supportedAssets = [NEAR, USDC, XRP]
+
+export default function TradePanel() {
+  const { currentTrade, currentPrice, pnl, trades, openTrade, closeTrade } = useTrade()
+
+  // For demonstration, user picks from these assets
+  const [assetFrom, setAssetFrom] = useState<Asset>(USDC)
+  const [assetTo, setAssetTo] = useState<Asset>(NEAR)
+  const [amountFrom, setAmountFrom] = useState<number>(10)
+
+  const handleSwap = async () => {
+    // 1) get price of the assetTo
+    const entryPrice = currentPrice || 2.0 // fallback, or fetch directly from price service
+    // 2) compute a naive "amountTo" – e.g. (amountFrom * priceFrom) / priceTo
+    // For simplicity, let's assume assetFrom is USDC for now. Adjust logic for real conversion.
+    const amountTo = amountFrom / entryPrice
+
+    // 3) open the trade
+    openTrade(assetFrom, assetTo, amountFrom, amountTo, entryPrice)
+  }
+
+  const handleCloseTrade = () => {
+    // 1) close using the current price
+    if (currentPrice) {
+      closeTrade(currentPrice)
+    }
+  }
+
+  return (
+    <div style={{ border: '1px solid #ccc', padding: 16, marginTop: 24 }}>
+      <h2>Trade Panel</h2>
+
+      {/* Select assets */}
+      <div style={{ marginBottom: 8 }}>
+        <label>Asset From: </label>
+        <select
+          value={assetFrom.symbol}
+          onChange={(e) => {
+            const asset = supportedAssets.find((a) => a.symbol === e.target.value)
+            if (asset) setAssetFrom(asset)
+          }}
+        >
+          {supportedAssets.map((asset) => (
+            <option key={asset.symbol} value={asset.symbol}>
+              {asset.symbol}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div style={{ marginBottom: 8 }}>
+        <label>Asset To: </label>
+        <select
+          value={assetTo.symbol}
+          onChange={(e) => {
+            const asset = supportedAssets.find((a) => a.symbol === e.target.value)
+            if (asset) setAssetTo(asset)
+          }}
+        >
+          {supportedAssets.map((asset) => (
+            <option key={asset.symbol} value={asset.symbol}>
+              {asset.symbol}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Amount */}
+      <div style={{ marginBottom: 8 }}>
+        <label>Amount of {assetFrom.symbol}: </label>
+        <input
+          type="number"
+          value={amountFrom}
+          onChange={(e) => setAmountFrom(Number(e.target.value))}
+        />
+      </div>
+
+      {/* Open or close trade */}
+      {!currentTrade ? (
+        <button onClick={handleSwap}>Open Trade</button>
+      ) : (
+        <button onClick={handleCloseTrade}>Close Trade</button>
+      )}
+
+      {/* Current Trade Info */}
+      {currentTrade && (
+        <div style={{ marginTop: 16 }}>
+          <strong>Current Trade:</strong>
+          <p>
+            Swapped {currentTrade.amountFrom} {currentTrade.assetFrom.symbol} for{' '}
+            {currentTrade.amountTo.toFixed(4)} {currentTrade.assetTo.symbol} at entry price $
+            {currentTrade.entryPrice.toFixed(2)}
+          </p>
+          <p>Current Price: ${currentPrice.toFixed(2)}</p>
+          <p>Unrealized PNL: ${pnl.toFixed(2)}</p>
+        </div>
+      )}
+
+      {/* Past Trades */}
+      {trades.length > 0 && (
+        <div style={{ marginTop: 16 }}>
+          <strong>Trade History:</strong>
+          <ul>
+            {trades.map((t) => (
+              <li key={t.id}>
+                {t.assetFrom.symbol} → {t.assetTo.symbol} | Entry: {t.entryPrice.toFixed(2)} | Exit:{' '}
+                {t.exitPrice?.toFixed(2)} | PNL: ${t.pnl?.toFixed(2)}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  )
+}
+
+
+===== ./monorepo/apps/web/src/modules/trading/hooks/useTrade.ts =====
+import { useEffect, useState } from 'react'
+import { useTradingStore } from '../state/trading.state'
+import { getPrice } from '../services/price.service'
+import { Trade } from '../types/trade.types'
+
+/**
+ * This hook returns:
+ * - currentTrade (if any)
+ * - PNL in real-time
+ * - functions to open, close, or partially close trades
+ * - real-time price of the current asset
+ */
+export function useTrade() {
+  const { currentTrade, openTrade, closeTrade, trades } = useTradingStore()
+  const [currentPrice, setCurrentPrice] = useState<number>(0)
+  const [pnl, setPnl] = useState<number>(0)
+
+  // Whenever currentTrade changes, fetch the real-time price of the assetTo
+  useEffect(() => {
+    let intervalId: NodeJS.Timer
+
+    async function fetchPriceLoop() {
+      if (currentTrade?.assetTo.symbol) {
+        const price = await getPrice(currentTrade.assetTo.symbol)
+        setCurrentPrice(price)
+
+        // naive PNL calculation
+        if (currentTrade) {
+          const _pnl = (price - currentTrade.entryPrice) * currentTrade.amountTo
+          setPnl(_pnl)
+        }
+      }
+    }
+
+    if (currentTrade) {
+      // fetch price immediately, then fetch repeatedly
+      fetchPriceLoop()
+      intervalId = setInterval(fetchPriceLoop, 5000) // poll every 5s
+    } else {
+      // reset when no current trade
+      setCurrentPrice(0)
+      setPnl(0)
+    }
+
+    return () => {
+      if (intervalId) clearInterval(intervalId)
+    }
+  }, [currentTrade])
+
+  return {
+    currentTrade,
+    currentPrice,
+    pnl,
+    trades,
+    openTrade,
+    closeTrade,
+  }
+}
+
+
+===== ./monorepo/apps/web/src/modules/trading/services/price.service.ts =====
+// Example price service for demonstration
+// Replace with a real Coingecko or on-chain oracle for actual usage
+
+// Mocked asset price map. In a real app, fetch from a live source
+const MOCK_PRICES: Record<string, number> = {
+    NEAR: 2.00,
+    USDC: 1.00,
+    XRP: 0.45,
+  }
+  
+  export async function getPrice(assetSymbol: string): Promise<number> {
+    // In a real scenario, you might call an API here:
+    // const resp = await fetch(`https://api.coingecko.com/...?symbol=${assetSymbol}`)
+    // return resp.data.price;
+  
+    // Simulate async with small delay
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(MOCK_PRICES[assetSymbol] ?? 0)
+      }, 300)
+    })
+  }
+  
+
+===== ./monorepo/apps/web/src/assets/react.svg =====
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="35.93" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 228"><path fill="#00D8FF" d="M210.483 73.824a171.49 171.49 0 0 0-8.24-2.597c.465-1.9.893-3.777 1.273-5.621c6.238-30.281 2.16-54.676-11.769-62.708c-13.355-7.7-35.196.329-57.254 19.526a171.23 171.23 0 0 0-6.375 5.848a155.866 155.866 0 0 0-4.241-3.917C100.759 3.829 77.587-4.822 63.673 3.233C50.33 10.957 46.379 33.89 51.995 62.588a170.974 170.974 0 0 0 1.892 8.48c-3.28.932-6.445 1.924-9.474 2.98C17.309 83.498 0 98.307 0 113.668c0 15.865 18.582 31.778 46.812 41.427a145.52 145.52 0 0 0 6.921 2.165a167.467 167.467 0 0 0-2.01 9.138c-5.354 28.2-1.173 50.591 12.134 58.266c13.744 7.926 36.812-.22 59.273-19.855a145.567 145.567 0 0 0 5.342-4.923a168.064 168.064 0 0 0 6.92 6.314c21.758 18.722 43.246 26.282 56.54 18.586c13.731-7.949 18.194-32.003 12.4-61.268a145.016 145.016 0 0 0-1.535-6.842c1.62-.48 3.21-.974 4.76-1.488c29.348-9.723 48.443-25.443 48.443-41.52c0-15.417-17.868-30.326-45.517-39.844Zm-6.365 70.984c-1.4.463-2.836.91-4.3 1.345c-3.24-10.257-7.612-21.163-12.963-32.432c5.106-11 9.31-21.767 12.459-31.957c2.619.758 5.16 1.557 7.61 2.4c23.69 8.156 38.14 20.213 38.14 29.504c0 9.896-15.606 22.743-40.946 31.14Zm-10.514 20.834c2.562 12.94 2.927 24.64 1.23 33.787c-1.524 8.219-4.59 13.698-8.382 15.893c-8.067 4.67-25.32-1.4-43.927-17.412a156.726 156.726 0 0 1-6.437-5.87c7.214-7.889 14.423-17.06 21.459-27.246c12.376-1.098 24.068-2.894 34.671-5.345a134.17 134.17 0 0 1 1.386 6.193ZM87.276 214.515c-7.882 2.783-14.16 2.863-17.955.675c-8.075-4.657-11.432-22.636-6.853-46.752a156.923 156.923 0 0 1 1.869-8.499c10.486 2.32 22.093 3.988 34.498 4.994c7.084 9.967 14.501 19.128 21.976 27.15a134.668 134.668 0 0 1-4.877 4.492c-9.933 8.682-19.886 14.842-28.658 17.94ZM50.35 144.747c-12.483-4.267-22.792-9.812-29.858-15.863c-6.35-5.437-9.555-10.836-9.555-15.216c0-9.322 13.897-21.212 37.076-29.293c2.813-.98 5.757-1.905 8.812-2.773c3.204 10.42 7.406 21.315 12.477 32.332c-5.137 11.18-9.399 22.249-12.634 32.792a134.718 134.718 0 0 1-6.318-1.979Zm12.378-84.26c-4.811-24.587-1.616-43.134 6.425-47.789c8.564-4.958 27.502 2.111 47.463 19.835a144.318 144.318 0 0 1 3.841 3.545c-7.438 7.987-14.787 17.08-21.808 26.988c-12.04 1.116-23.565 2.908-34.161 5.309a160.342 160.342 0 0 1-1.76-7.887Zm110.427 27.268a347.8 347.8 0 0 0-7.785-12.803c8.168 1.033 15.994 2.404 23.343 4.08c-2.206 7.072-4.956 14.465-8.193 22.045a381.151 381.151 0 0 0-7.365-13.322Zm-45.032-43.861c5.044 5.465 10.096 11.566 15.065 18.186a322.04 322.04 0 0 0-30.257-.006c4.974-6.559 10.069-12.652 15.192-18.18ZM82.802 87.83a323.167 323.167 0 0 0-7.227 13.238c-3.184-7.553-5.909-14.98-8.134-22.152c7.304-1.634 15.093-2.97 23.209-3.984a321.524 321.524 0 0 0-7.848 12.897Zm8.081 65.352c-8.385-.936-16.291-2.203-23.593-3.793c2.26-7.3 5.045-14.885 8.298-22.6a321.187 321.187 0 0 0 7.257 13.246c2.594 4.48 5.28 8.868 8.038 13.147Zm37.542 31.03c-5.184-5.592-10.354-11.779-15.403-18.433c4.902.192 9.899.29 14.978.29c5.218 0 10.376-.117 15.453-.343c-4.985 6.774-10.018 12.97-15.028 18.486Zm52.198-57.817c3.422 7.8 6.306 15.345 8.596 22.52c-7.422 1.694-15.436 3.058-23.88 4.071a382.417 382.417 0 0 0 7.859-13.026a347.403 347.403 0 0 0 7.425-13.565Zm-16.898 8.101a358.557 358.557 0 0 1-12.281 19.815a329.4 329.4 0 0 1-23.444.823c-7.967 0-15.716-.248-23.178-.732a310.202 310.202 0 0 1-12.513-19.846h.001a307.41 307.41 0 0 1-10.923-20.627a310.278 310.278 0 0 1 10.89-20.637l-.001.001a307.318 307.318 0 0 1 12.413-19.761c7.613-.576 15.42-.876 23.31-.876H128c7.926 0 15.743.303 23.354.883a329.357 329.357 0 0 1 12.335 19.695a358.489 358.489 0 0 1 11.036 20.54a329.472 329.472 0 0 1-11 20.722Zm22.56-122.124c8.572 4.944 11.906 24.881 6.52 51.026c-.344 1.668-.73 3.367-1.15 5.09c-10.622-2.452-22.155-4.275-34.23-5.408c-7.034-10.017-14.323-19.124-21.64-27.008a160.789 160.789 0 0 1 5.888-5.4c18.9-16.447 36.564-22.941 44.612-18.3ZM128 90.808c12.625 0 22.86 10.235 22.86 22.86s-10.235 22.86-22.86 22.86s-22.86-10.235-22.86-22.86s10.235-22.86 22.86-22.86Z"></path></svg>
+
+===== ./monorepo/pnpm-workspace.yaml =====
+packages:
+  - apps/*
+  - packages/*
+
+
+===== ./generate_report.sh =====
+#!/usr/bin/env bash
+
+# Name of the output file for the repository tree
+OUTPUT_FILE="repo_tree.txt"
+
+# Directories and files to exclude from the tree (adjust as needed)
+EXCLUDE_ITEMS=".git node_modules pnpm-lock.yaml"
+
+# Build a pattern for 'tree' to ignore directories/files in EXCLUDE_ITEMS.
+EXCLUDE_PATTERN=$(echo "$EXCLUDE_ITEMS" | sed 's/ /|/g')
+
+# Generate a tree structure of the repository, excluding the specified directories and files
+echo "Generating a tree of the repository..."
+tree -a -I "$EXCLUDE_PATTERN" . > "$OUTPUT_FILE"
+echo "Repository tree saved to '$OUTPUT_FILE'."
+
+# Name of the output file for the repository content
+CONTENT_OUTPUT_FILE="repo_content.txt"
+
+echo "Generating a concatenated content file of all repository files (excluding node_modules and pnpm-lock.yaml)..."
+
+# Use find to list all files, excluding those under any node_modules directory and any file named pnpm-lock.yaml.
+find . -type d -name "node_modules" -prune -o -type f ! -name "pnpm-lock.yaml" -print | while read file; do
+    echo "===== $file =====" >> "$CONTENT_OUTPUT_FILE"
+    cat "$file" >> "$CONTENT_OUTPUT_FILE"
+    echo -e "\n" >> "$CONTENT_OUTPUT_FILE"
+done
+
+echo "Repository content saved to '$CONTENT_OUTPUT_FILE'."
+
+
+===== ./package.json =====
+{
+	"dependencies": {
+		"@near-wallet-selector/near-mobile-wallet": "^8.10.1",
+		"uuid": "^11.1.0",
+		"zustand": "^5.0.3"
+	}
+}
+
+
+===== ./get_only_tree.sh =====
+#!/usr/bin/env bash
+
+# Name of the output file
+OUTPUT_FILE="repo_tree.txt"
+
+# Directories to exclude from the tree
+# Adjust as needed (e.g., .git node_modules dist build coverage).
+EXCLUDE_DIRS=".git node_modules"
+
+# Build a pattern for 'tree' to ignore directories in EXCLUDE_DIRS.
+EXCLUDE_PATTERN=$(echo "$EXCLUDE_DIRS" | sed 's/ /|/g')
+
+# Generate a tree structure of the repository, excluding the specified directories
+echo "Generating a tree of the repository..."
+tree -a -I "$EXCLUDE_PATTERN" . > "$OUTPUT_FILE"
+
+echo "Done! The repository tree is saved to '$OUTPUT_FILE'."
+
+===== ./CreateProjectPrompt.txt =====
+
+
+I want to build a simple NEAR dApp that works with wallet-selector NEARMobile_app .
+
+This dapp is a ultra simplistic trading tool to trade between NEAR Intent assets.
+
+The idea is very simple and the UI should represent it in the same way:
+
+The web is a trading tool where users can trade NEAR Intent assets and have a trading history of their swap prices and PNL on each trade.
+
+The idea is PNL starts at 0 ofc and the user can choose any asset to swap for. So user has asset A and swaps for Asset B.
+Once the user swaps asset A for B he can view in realtime the amount of $s made since he swapped. For example if the user swapped USDC for NEAR and NEAR went up PNL is possitive, the user should see the PNL in realtime. Now lets imagine the user swaps again NEAR but now for XRP. Now the PNL from the previous trade closes and gets saved on the list of trades as:
+Bought NEAR for X USDC and swapped it for Y USDC: 15$ PNL
+Now he is in the next trade: Bought XRP for X NEAR. Current PNL = -3 $s 
+
+On each active trade the user can choose to sell % or BUY. 
+
+If the user bought 10 XRP for 5 NEAR and then sells 5 XRP for 3 NEAR the PNL is 1 NEAR in $s at that time.
+
+Now based on Peersyst coding style, code architecture and guidelines lets start this project:
+
+
+Perfect! With your goal of building a minimal NEAR Intent trading tool and given our Peersyst-aligned architecture, we’ll structure this project in a modular and domain-driven way. Here's a proposed breakdown to get started:
+
+---
+
+## 🏗️ Project Setup
+
+**Monorepo Structure:**
+```
+monorepo/
+├── apps/
+│   ├── api/ (Optional for historical data or user tracking)
+│   ├── web/ (Vite + React frontend)
+│   └── mobile/ (for NEARMobile_app integration later)
+├── packages/
+│   ├── frontend/ (hooks, services, domain models)
+│   ├── shared/ (types, utilities, NEAR wallet-selector logic)
+│   └── backend/ (if API is needed)
+```
+
+---
+
+## 📱 Frontend Structure (`apps/web`)
+
+### `src/modules/trading/`
+- `components/`
+  - `TradePanel.tsx` – select assets, input amount, swap
+  - `PNLDisplay.tsx` – shows live PNL for current trade
+  - `TradeHistory.tsx` – list of past trades with PNL summary
+- `hooks/`
+  - `useTrade.ts` – manages current trade state
+  - `usePNL.ts` – computes PNL based on real-time prices
+- `services/`
+  - `price.service.ts` – fetches token prices (via Coingecko or on-chain)
+  - `swap.service.ts` – simulates/executes asset swaps (using NEAR SDK)
+- `state/`
+  - `trading.state.ts` – zustand store for trade data
+- `types/`
+  - `trade.types.ts` – trade, asset, pnl interfaces
+
+### `src/core/wallet/`
+- `near.factory.ts` – handles NEAR wallet-selector logic
+- `wallet.state.ts` – manages connected wallet, balances, etc.
+
+---
+
+## ⚙️ Shared Logic (`packages/frontend` or `shared`)
+- `utils/number-format.ts` – formats $PNL values
+- `hooks/use-interval.ts` – hook for real-time price polling
+- `constants/tokens.ts` – supported NEAR Intent assets
+
+---
+
+## 🔐 Wallet Selector Integration
+
+- Integrate [`near/wallet-selector`](https://github.com/near/wallet-selector) in `near.factory.ts`.
+- Use `@near-wallet-selector/core` with `near-mobile` module to support NEARMobile.
+- Example wallet integration logic lives in `wallet.service.ts`.
+
+---
+
+## 🧠 Domain Logic
+
+### Trade Lifecycle
+- A "trade" opens when user swaps Asset A → B.
+- PNL is computed based on the *current* price of Asset B vs. the price when swapped.
+- A trade closes when another swap occurs or when selling all of the asset.
+
+### Trade History
+- Each closed trade gets stored in a `trades[]` array.
+- Show entry price, exit price, and calculated PNL in both token and USD.
+
+---
+
+## 🧪 Testing Plan
+
+- Unit test hooks (`useTrade`, `usePNL`) with mock price data.
+- Mock services (`price.service.mock.ts`, `swap.service.mock.ts`).
+- Test trading logic with state transitions (open, update PNL, close).
+
+---
+
+Would you like me to scaffold the initial `TradePanel`, `useTrade`, and state management so we can kick off with code?
+
+.
+├── CreateProjectPrompt.txt
+├── get_only_tree.sh
+├── monorepo
+│   ├── .github
+│   │   └── workflows
+│   │       └── build-web.yaml
+│   ├── README.md
+│   ├── apps
+│   │   ├── api
+│   │   └── web
+│   │       ├── .gitignore
+│   │       ├── README.md
+│   │       ├── eslint.config.js
+│   │       ├── index.html
+│   │       ├── package.json
+│   │       ├── public
+│   │       │   └── vite.svg
+│   │       ├── src
+│   │       │   ├── App.css
+│   │       │   ├── App.tsx
+│   │       │   ├── assets
+│   │       │   │   └── react.svg
+│   │       │   ├── core
+│   │       │   │   └── wallet
+│   │       │   │       └── near.factory.ts
+│   │       │   ├── index.css
+│   │       │   ├── main.tsx
+│   │       │   ├── modules
+│   │       │   │   └── trading
+│   │       │   │       ├── components
+│   │       │   │       │   └── TradePanel.tsx
+│   │       │   │       ├── hooks
+│   │       │   │       │   └── useTrade.ts
+│   │       │   │       ├── services
+│   │       │   │       │   └── price.service.ts
+│   │       │   │       ├── state
+│   │       │   │       │   └── trading.state.ts
+│   │       │   │       └── types
+│   │       │   │           └── trade.types.ts
+│   │       │   └── vite-env.d.ts
+│   │       ├── tsconfig.app.json
+│   │       ├── tsconfig.json
+│   │       ├── tsconfig.node.json
+│   │       └── vite.config.ts
+│   ├── docker
+│   ├── packages
+│   │   ├── backend
+│   │   ├── frontend
+│   │   └── shared
+│   ├── pnpm-lock.yaml
+│   ├── pnpm-workspace.yaml
+│   └── turbo.json
+└── repo_tree.txt
+
+24 directories, 30 files
+
+
+
+
+
+------------
+
+Below are some suggestions to help you create a **MetaTrader-style mobile UI** with NEAR Protocol branding. These recommendations lean toward a React-based (web) or React Native (mobile) approach, but the principles can be adapted to your preferred stack.
+
+---
+
+## 1. My App Plan Layout
+
+### A. **MetaTrader-Like Navigation**
+- **Bottom Tab Navigation** (common in mobile trading apps): 
+  - **Quotes/Markets** – where users see a list of tradable pairs/assets from NEAR Intents.
+  - **Chart** – main chart view (candlesticks) (Trading view Lightweight Charts )
+  - **Trade** – active orders, positions, new order form (Swap and OTC Intents features. Swap as market and OTC as limit order )
+  - **History** – closed trades, PNL, deposit/withdrawal from Intents history
+  - **Settings** – wallet connection, user preferences (Fiat display value, up/down colors: red/green , black/grey, blue/grey)
+
+### B. **Header/Branding**
+- Splash screen with dapp logo: A copy of MetaTrader 5 logo but with NEAR branding and called NearTrader5
+- Keep the rest of the layout relatively neutral in color so NEAR branding stands out (e.g., white backgrounds with NEAR’s accent color for the icons at the bottom menu.)
+
+### C. **Charting View**
+- MetaTrader’s primary view is a candlestick chart, with overlay indicators. 
+- For a minimal MVP use:
+  - **[Lightweight Charts](https://www.tradingview.com/lightweight-charts/)** (TradingView’s open-source library)
+- Include an *Order panel* near the bottom (or a floating action button) to place trades quickly.
+
+---
+
+## 2. Use a Mobile-First Design System
+
+MetaTrader’s mobile UI uses:
+- **Minimal top-level navigation** – mostly bottom tabs or side drawer
+- **Compact lists** for markets, orders, trades
+- **Bright highlights** for PNL (green for profit, red for loss)
+
+### A. **Color Palette**
+- NEAR’s primary color is often rendered as white-on-black or black-on-white with accent green.  
+- For a *MetaTrader vibe*:
+  - Keep backgrounds simple (gray, dark gray, or white).
+  - Use green for positive changes and red for negative changes (or brand accent color for positivity).
+
+### B. **Typography & Icons**
+- Use a sleek, modern typeface for your headings and text (e.g., Inter, Roboto, etc.).
+- For icons, adopt a consistent set that represents:
+  - Market quotes (e.g., “graph” icon)
+  - Orders (e.g., “shopping cart” or “swap” icon)
+  - PNL (up or down arrows, “profit” icon)
+  - NEAR’s official logo for the main brand reference
+
+### C. **Responsive or Native?**
+1. **Responsive Web**: If using `apps/web` + React + Vite, ensure you use responsive breakpoints and possibly a library like **Chakra UI** or **Material UI** with custom theming for that “mobile-first” experience.  
+
+---
+
+## 3. Core Screens to Emulate MetaTrader’s Flow
+
+1. **Splash/Authentication**  
+   - If your DApp requires a login or wallet connection first, show a minimal screen with the NEAR logo.  
+   - Provide a “Connect Wallet” button that triggers the NEARMobile or wallet-selector sign in flow.
+
+2. **Quotes/Markets Screen**  
+   - List of markets or assets: NEAR/USDC, NEAR/XRP, etc.  
+   - Show current price, 24h % change, maybe a small sparkline chart on the right side.
+
+3. **Chart Screen**  
+   - The main candlestick or line chart.  
+   - Timeframe options (1m, 5m, 1h, 1d, etc.) in a horizontal scroll or segmented control.  
+   - “New Order” button (floating or in a top-right menu) that slides up the trade panel.
+
+4. **Trade Panel**  
+   - Very important to keep it simple: “Buy” or “Sell” with an amount input.  
+   - “Market Execution” Intents Swap or “Limit Order” Intents OTC.  
+   - Display user’s current wallet balance, open positions, etc.
+
+5. **Positions Screen**  
+   - List active trades with real-time PNL.  
+   - Option to partially close or fully close a position.  
+
+6. **History Screen**  
+   - Past trades, deposit/withdraw records, total PNL.
+
+---
+
+## 4. NEAR Integration & Wallet Connection
+
+1. **NEARMobile** (or other wallet modules)  
+   - Install `@near-wallet-selector/core`, `near-mobile`, and `@near-wallet-selector/modal-ui`.  
+   - In your code, initialize the wallet selector in a factory (e.g., `src/core/wallet/near.factory.ts`).  
+   - Create a store or context to track the user’s connected account, balances, etc.
+
+2. **Trading Flow**  
+   - Typically, MetaTrader is trading on a centralized server.  
+   - For our NEAR DApp the whole swap functionality is inherited from NEAR Intents.
+
+3. **Fetching Balances**  
+   - After user is connected, fetch their token balances (NEAR, USDC, etc.) from NEAR Intents.
+   - Display real-time balance changes if they make trades on-chain.
+
+---
+
+## 5. Visual/UX Examples
+
+**MetaTrader Mobile Key Features to Replicate:**
+- **Charts**: Focus on a single major chart with optional technical indicators.  
+- **Order/Position List**: Show each open position in a card with current PNL.  
+- **Action Buttons**: Typically in the bottom navigation or a floating action button for “New Order”.
+
+**Styling Tips**  
+- Keep the color scheme consistent: use a dark theme with bright neon lines for charts if you want that typical “trader” look.  
+- Show top or bottom bar with essential icons: Home, Charts, Trades, Wallet, Settings.
+
+---
+
+## 6. Example React (Web) Setup for a “Mobile-Style” Layout expose network ip and port to test on mobile 
+
+```tsx
+// pseudo code for a bottom tab layout
+// you can do this with react-router + a "TabBar" component
+function MobileLayout() {
+  return (
+    <div style={styles.container}>
+      <div style={styles.content}>
+        <Routes>
+          <Route path="/" element={<MarketsScreen />} />
+          <Route path="/chart" element={<ChartScreen />} />
+          <Route path="/trade" element={<TradeScreen />} />
+          <Route path="/history" element={<HistoryScreen />} />
+          <Route path="/settings" element={<SettingsScreen />} />
+        </Routes>
+      </div>
+      <TabBar />
+    </div>
+  )
+}
+```
+
+```ts
+// example styles for a bottom bar
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'column' as const,
+    height: '100vh',
+  },
+  content: {
+    flex: 1,
+    overflowY: 'auto' as const,
+  },
+}
+
+// Then define your <TabBar> with icons for each route
+```
+
+When the user opens the site from a mobile device, it’ll look and behave similarly to a mobile app with bottom tabs.
+
+---
+
+## 7. Implementation Notes
+
+- **Testing**: Use responsive design tools in your browser (Chrome DevTools) to simulate mobile screen sizes.  
+- **Charts**: TradingView.  
+- **State Management**: Continue using Zustand for trade/pnl data and queries to your NEAR contract for on-chain details.  
+- **Branding**: Place the NEAR logo tastefully at the top or in a splash screen, adopt NEAR’s color scheme for accent elements, and use neutral or dark backgrounds for the “trading” sections.
+
+---
+
+## 8. Summary & Next Steps
+
+1. **Implement a mobile-style navigation** (bottom tabs).  
+2. **Adopt a chart library** (e.g., TradingView’s lightweight-charts) for the primary chart.  
+3. **Use a React design system** (Chakra, MUI) to quickly build mobile-friendly screens, or go fully **React Native** for an actual mobile app.  
+4. **Sync with NEAR** (wallet-selector + near-mobile) for account login, balance fetching, and real on-chain swaps.  
+5. **Mimic MetaTrader UX**:  
+   - **Tabs**: Quotes, Chart, Trade, History, Settings  
+   - **Order forms**: Simple, with buy/sell toggles  
+   - **Positions**: Real-time PNL in a list  
+   - **History**: A simple transaction log
+
+With these steps, you can produce a mobile interface that strongly resembles MetaTrader’s user experience but with NEAR branding and on-chain logic. 
+
+Good luck with your build, and feel free to ask if you need more specific code snippets or direction on any of these steps!
+
+
