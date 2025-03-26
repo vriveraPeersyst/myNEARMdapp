@@ -1,7 +1,9 @@
+// monorepo/apps/web/src/App.tsx
 import React from "react";
 import { useWalletSelector } from "./contexts/WalletSelectorContext";
 import SplashScreen from "./components/SplashScreen";
-import Routes from "./Routes"; // Your main tab-based routing
+import Routes from "./Routes";
+import ConnectedAccountCard from "./components/ConnectedAccountCard";
 
 export default function App() {
   const { accountId } = useWalletSelector();
@@ -10,5 +12,13 @@ export default function App() {
     return <SplashScreen />;
   }
 
-  return <Routes />;
+  return (
+    <div style={{ display: "flex", gap: "16px" }}>
+      <div style={{ flex: 1 }}>
+        <Routes />
+      </div>
+      {/* For example, show the account card on the right */}
+      <ConnectedAccountCard />
+    </div>
+  );
 }
