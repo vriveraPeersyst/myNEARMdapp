@@ -1,13 +1,11 @@
 // monorepo/apps/web/src/components/ConnectedAccountCard.tsx
-
 import React from "react";
 import { useWalletSelector } from "../contexts/WalletSelectorContext";
 
 export default function ConnectedAccountCard() {
   const { selector, accountId } = useWalletSelector();
 
-  // If there's no connected account, hide this component
-  if (!accountId) return null;
+  if (!accountId) return <p>You are not signed in.</p>;
 
   const handleSignOut = async () => {
     try {
@@ -26,7 +24,6 @@ export default function ConnectedAccountCard() {
   return (
     <div style={styles.card}>
       <div style={styles.topRow}>
-        {/* NEAR brand icon (replace with your own if you prefer) */}
         <img
           src="https://cryptologos.cc/logos/near-protocol-near-logo.png"
           alt="NEAR Protocol"

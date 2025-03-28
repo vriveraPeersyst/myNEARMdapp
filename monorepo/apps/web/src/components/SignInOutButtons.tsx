@@ -5,18 +5,16 @@ import { useWalletSelector } from "../contexts/WalletSelectorContext";
 export default function SignInOutButtons() {
   const { selector, modal, accountId } = useWalletSelector();
 
-  // 1) Show the modal for NEARMobile sign-in
   const handleSignIn = () => {
+    // Show the wallet-selector modal for NEARMobile
     modal.show();
   };
 
-  // 2) Sign out from the active wallet
   const handleSignOut = async () => {
     try {
-      const wallet = await selector.wallet(); 
+      const wallet = await selector.wallet();
       await wallet.signOut();
-      // This clears local state, removing the key from localStorage
-      // The store subscription sets accountId to null
+      console.log("Signed out");
     } catch (err) {
       console.error("Failed to sign out", err);
     }

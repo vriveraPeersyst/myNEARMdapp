@@ -3,8 +3,11 @@ import React from "react";
 import { useWalletSelector } from "./contexts/WalletSelectorContext";
 import SplashScreen from "./components/SplashScreen";
 import Routes from "./Routes";
-import ConnectedAccountCard from "./components/ConnectedAccountCard";
 
+/**
+ * If there's no accountId, show the splash screen.
+ * Otherwise, show the main layout with routes.
+ */
 export default function App() {
   const { accountId } = useWalletSelector();
 
@@ -17,8 +20,6 @@ export default function App() {
       <div style={{ flex: 1 }}>
         <Routes />
       </div>
-      {/* For example, show the account card on the right */}
-      <ConnectedAccountCard />
     </div>
   );
 }

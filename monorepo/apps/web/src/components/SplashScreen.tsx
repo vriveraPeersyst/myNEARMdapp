@@ -1,3 +1,4 @@
+// monorepo/apps/web/src/components/SplashScreen.tsx
 import React from "react";
 import { useWalletSelector } from "../contexts/WalletSelectorContext";
 
@@ -5,7 +6,8 @@ export default function SplashScreen() {
   const { modal } = useWalletSelector();
 
   const handleSignIn = () => {
-    modal.show(); // Opens the modal; with only NEARMobile available, it directs there.
+    // This shows the wallet-selector modal
+    modal.show();
   };
 
   return (
